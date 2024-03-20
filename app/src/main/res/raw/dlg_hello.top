@@ -1,0 +1,84 @@
+topic: ~dlg_hello ^noPick ^noStay()
+
+u:(_[你好 喂 嗨 您好 你好啊 您好呀 您好嗄 好的 早 上午 下午 晚上 你好啊 "你好呀"]) ^first[
+    "$greeting==done ^enableThenGoto(hello_again)"
+    "$salutations==true salutations ^clear(salutations) $greeting=done"
+    "^rand[$1 你好 喂 嗨 您好 你好啊 您好呀] $greeting=done"
+]
+
+#rule: hello_again#
+u:(^empty) %hello_again
+[
+    "又见面了"
+    "你已经打过招呼了！但我很感激！"
+    "你真的喜欢打招呼！真是太好了！^rand[你好 喂 嗨 嗨 你好呀 你好啊]"
+]
+
+#rule: hello_repeated#
+u:([你 你已经 你有过 你说过] [
+    你好 喂 嗨 您好 您好啊 你好呀 你好嗄 好的 早 上午 晚上]) [
+    "又见面了！"
+    "我宁愿多说几次也不愿意说得不够。"
+]
+
+#rule: good_morning#
+u:({早 上午}) ^rand[
+    "早上好！"
+]
+
+#rule: good_afternoon#
+u:({下午}) ^rand[
+    "下午好！"
+]
+
+#rule: good_evening#
+u:({晚上}) ^rand[
+    "晚上好！"
+]
+
+u:([
+    "{"很" "真的"}高兴见到你"
+    "见到你真的太{"好" "棒" "可爱" "开心" "荣幸"}了"
+    "见到你{"太" "非常" "很"}{"高兴" "开心" "满意" "愉快" "荣幸"}"
+])
+\style=joyful\
+^first[
+    "$meeting==done ^enableThenGoto(met_already)"
+    "见到你$1！我也很开心！$meeting=done"
+    "见到你$2！$3！$meeting=done"
+    "我$4见到你$5！$meeting=done"
+    "对我来说也是一样的，{$user/name}！$meeting=done"
+]
+\style=neutral\
+
+#rule: met_already
+u:($empty) %met_already
+^rand[
+    "我也是，但我们已经见过面了。我希望我不会那么容易被忘记。"
+    "可能还有几个看起来有点像我的Pepper机器人，但你和我已经见过面了！"
+    "我还记得你！你呢？$wait_answer=yes"
+    "哦！我们已经见过面了，你记得我吗？$wait_answer=yes"
+]
+        u1:($wait_answer==yes [是的 好的 恩 是的的确 "我记得你"])
+        ^rand["好的。" "太好了！" "我也这么想！"] ^clear(wait_answer)
+
+        u1:($wait_answer==yes [不 不记得])
+        ^rand[
+            "我可能把你和其他人搞混了。很高兴见到你！"
+            "见到你也很开心。"
+            "我很高兴再次见到你。希望这次你会记得我。"
+        ] ^clear(wait_answer)
+
+#rule:nice_to_see_you_again#
+u:([
+    "见到你$1"
+    "见到你$2"
+    "我$3见到你$4"
+]
+再次见到你)
+\style=joyful\
+^first[
+    "我也很开心再次见到你！"
+    "对我来说也一样，{$user/name}！"
+]
+\style=neutral\
