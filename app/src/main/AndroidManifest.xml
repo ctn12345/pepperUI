@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.softbankrobotics.chatbotsample">
 
     <!--连接网络权限，用于执行云端语音能力 -->
@@ -11,6 +12,11 @@
     <!--获取当前wifi状态 -->
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
 
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+
+
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/chatbot_icon"
@@ -18,7 +24,10 @@
         android:roundIcon="@drawable/chatbot_icon"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <service android:name=".MyBackgroundService" />
+
         <activity android:name=".MainActivity"/>
+
         <activity android:name=".AppRequirementActivity"/>
         <activity android:name=".AppIntroductionActivity">
             <intent-filter>
@@ -26,8 +35,13 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
+
     </application>
+
+
+
 
     <uses-feature android:name="com.softbank.hardware.pepper"/>
 </manifest>
